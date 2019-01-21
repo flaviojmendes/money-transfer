@@ -1,0 +1,4 @@
+logging:
+  level: INFO
+  loggers:
+    me.fjm: DEBUG
