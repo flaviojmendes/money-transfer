@@ -3,6 +3,9 @@ package me.fjm;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import me.fjm.core.AccountRepository;
+import me.fjm.health.DefaultHealthCheck;
+import me.fjm.resources.AccountResource;
 
 public class MoneytransferApplication extends Application<MoneytransferConfiguration> {
 
@@ -23,7 +26,17 @@ public class MoneytransferApplication extends Application<MoneytransferConfigura
     @Override
     public void run(final MoneytransferConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+
+        // Account
+        final AccountRepository accountRepository = new AccountRepository();
+        final AccountResource accountResource = new AccountResource(accountRepository);
+        environment.jersey().register(accountResource);
+
+
+        // Health Check
+        final DefaultHealthCheck healthCheck = new DefaultHealthCheck();
+        environment.healthChecks().register("default", healthCheck);
+
     }
 
 }
