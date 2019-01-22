@@ -2,7 +2,7 @@ package me.fjm.resources;
 
 import io.dropwizard.jersey.params.LongParam;
 import me.fjm.api.Account;
-import me.fjm.core.AccountRepository;
+import me.fjm.db.AccountRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
