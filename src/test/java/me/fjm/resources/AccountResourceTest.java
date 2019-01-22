@@ -27,7 +27,9 @@ public class AccountResourceTest {
 
     @Test
     public void testGetAccount() {
-        Account retrievedAccount = resources.target("/account/1").request().get(Account.class);
+        Account retrievedAccount = resources.target("/account")
+                .queryParam("id", "1")
+                .request().get(Account.class);
 
         assertNotNull(retrievedAccount);
         assertEquals(account.getId(), retrievedAccount.getId());
@@ -39,7 +41,9 @@ public class AccountResourceTest {
     @Test
     public void testGetInvalidAccount() {
 
-        Response response = resources.target("/account/100").request().get();
+        Response response = resources.target("/account")
+                .queryParam("id", "100")
+                .request().get();
         assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
     }
@@ -48,7 +52,8 @@ public class AccountResourceTest {
 
     @Test
     public void testGetAllAccounts() {
-        List<Account> retrievedAccounts = resources.target("/account").request().get(List.class);
+        List<Account> retrievedAccounts = resources.target("/account/list")
+                .request().get(List.class);
 
         assertNotNull(retrievedAccounts);
         assertEquals(3, retrievedAccounts.size());
@@ -64,7 +69,8 @@ public class AccountResourceTest {
                 .setName("New User")
                 .setBalance(30.0);
 
-        Account savedAccount = resources.target("/account").request().post(Entity.json(newAccount), Account.class);
+        Account savedAccount = resources.target("/account")
+                .request().post(Entity.json(newAccount), Account.class);
 
         assertNotNull(savedAccount);
         assertEquals(newAccount.getName(), savedAccount.getName());
@@ -79,7 +85,9 @@ public class AccountResourceTest {
         Account newAccount = new Account();
         newAccount.setName("Updated Name");
 
-        Account updatedAccount = resources.target("/account/1").request().put(Entity.json(newAccount), Account.class);
+        Account updatedAccount = resources.target("/account")
+                .queryParam("id", "1")
+                .request().put(Entity.json(newAccount), Account.class);
 
         assertNotNull(updatedAccount);
         assertEquals(newAccount.getName(), updatedAccount.getName());
@@ -93,7 +101,9 @@ public class AccountResourceTest {
         Account newAccount = new Account();
         newAccount.setName("Updated Name");
 
-        Response response  = resources.target("/account/999").request().put(Entity.json(newAccount));
+        Response response  = resources.target("/account")
+                .queryParam("id", "999")
+                .request().put(Entity.json(newAccount));
 
         assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
@@ -109,9 +119,13 @@ public class AccountResourceTest {
 
         repository.save(newAccount);
 
-        resources.target("/account/4").request().delete(Account.class);
+        resources.target("/account")
+                .queryParam("id", newAccount.getId())
+                .request().delete(Account.class);
 
-        Response response = resources.target("/account/100").request().get();
+        Response response = resources.target("/account")
+                .queryParam("id", newAccount.getId())
+                .request().get();
         assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
 

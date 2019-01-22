@@ -20,13 +20,13 @@ public class AccountResource {
     }
 
     @GET
+    @Path("/list")
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }
 
     @GET
-    @Path("{id}")
-    public Account getAccount(@PathParam("id") LongParam id) {
+    public Account getAccount(@QueryParam("id") LongParam id) {
         return accountRepository.findById(id.get())
                 .orElseThrow(() ->
                         new WebApplicationException("Account not found", 404));
@@ -39,16 +39,14 @@ public class AccountResource {
     }
 
     @PUT
-    @Path("{id}")
-    public Account update(@PathParam("id") LongParam id, Account account) {
+    public Account update(@QueryParam("id") LongParam id, Account account) {
         return accountRepository.update(id.get(), account)
                 .orElseThrow(() ->
                         new WebApplicationException("Account not found", 404));
     }
 
     @DELETE
-    @Path("{id}")
-    public Response delete(@PathParam("id") LongParam id) {
+    public Response delete(@QueryParam("id") LongParam id) {
         accountRepository.delete(id.get());
         return Response.ok().build();
     }

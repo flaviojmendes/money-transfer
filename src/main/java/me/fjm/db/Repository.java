@@ -34,7 +34,16 @@ public class Repository<T extends Entity> {
         data = new ArrayList<>();
     }
 
+    /**
+     * This Method Initializes a Datasource. It is implemented this
+     * way for the sake of the application demonstration without a
+     * proper Database.
+     * @param datasource
+     * @param clazz
+     * @throws IOException
+     */
     private void initData(String datasource, Class clazz) throws IOException {
+        logger.info("Initializing " + clazz.getName() + " database.");
         URL url = Resources.getResource(datasource);
         String json = Resources.toString(url, Charsets.UTF_8);
         ObjectMapper mapper = new ObjectMapper();
@@ -71,6 +80,13 @@ public class Repository<T extends Entity> {
         return existingEntity;
     }
 
+    /**
+     * Using reflection to populate changed fields from the changed
+     * entity to the DB Entity. Just NonNull fields will be set.
+      * @param newEntity
+     * @param dbEntity
+     * @return
+     */
     private T updateExceptId(T newEntity, T dbEntity) {
 
         Field[] fields = newEntity.getClass().getDeclaredFields();

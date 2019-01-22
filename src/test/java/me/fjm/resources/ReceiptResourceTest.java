@@ -35,7 +35,9 @@ public class ReceiptResourceTest {
     public void testGetReceipt() {
         Receipt savedReceipt = repository.save(receipt);
 
-        Receipt retrievedReceipt = resources.target("/receipt/1").request().get(Receipt.class);
+        Receipt retrievedReceipt = resources.target("/receipt")
+                .queryParam("id", "1")
+                .request().get(Receipt.class);
 
         assertNotNull(retrievedReceipt);
         assertEquals(savedReceipt.getId(), retrievedReceipt.getId());
@@ -49,18 +51,18 @@ public class ReceiptResourceTest {
     @Test
     public void testGetInvalidReceipt() {
 
-    Response response = resources.target("/receipt/100").request().get();
+    Response response = resources.target("/receipt")
+            .queryParam("id", "100")
+            .request().get();
     assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
     }
-
-
 
     @Test
     public void testGetAllReceipts() {
         Receipt savedReceipt = repository.save(receipt);
 
-        List<Receipt> retrievedReceipts = resources.target("/receipt").request().get(List.class);
+        List<Receipt> retrievedReceipts = resources.target("/receipt/list").request().get(List.class);
 
         assertNotNull(retrievedReceipts);
         assertEquals(1, retrievedReceipts.size());

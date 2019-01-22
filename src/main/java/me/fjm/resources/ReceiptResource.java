@@ -19,13 +19,13 @@ public class ReceiptResource {
     }
 
     @GET
+    @Path("/list")
     public List<Receipt> getReceipts() {
         return receiptRepository.findAll();
     }
 
     @GET
-    @Path("{id}")
-    public Receipt getReceipt(@PathParam("id") LongParam id) {
+    public Receipt getReceipt(@QueryParam("id") LongParam id) {
         return receiptRepository.findById(id.get())
                 .orElseThrow(() ->
                         new WebApplicationException("Receipt not found", 404));

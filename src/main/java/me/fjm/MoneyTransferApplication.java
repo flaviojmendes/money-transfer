@@ -4,7 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import me.fjm.db.AccountRepository;
-import me.fjm.health.DefaultHealthCheck;
+import me.fjm.health.DBHealthCheck;
 import me.fjm.db.ReceiptRepository;
 import me.fjm.resources.AccountResource;
 import me.fjm.resources.ReceiptResource;
@@ -22,9 +22,7 @@ public class MoneyTransferApplication extends Application<MoneyTransferConfigura
     }
 
     @Override
-    public void initialize(final Bootstrap<MoneyTransferConfiguration> bootstrap) {
-        // TODO: application initialization
-    }
+    public void initialize(final Bootstrap<MoneyTransferConfiguration> bootstrap) {}
 
     @Override
     public void run(final MoneyTransferConfiguration configuration,
@@ -48,7 +46,7 @@ public class MoneyTransferApplication extends Application<MoneyTransferConfigura
 
 
         // Health Check
-        final DefaultHealthCheck healthCheck = new DefaultHealthCheck();
+        final DBHealthCheck healthCheck = new DBHealthCheck(accountRepository, receiptRepository);
         environment.healthChecks().register("default", healthCheck);
 
     }
