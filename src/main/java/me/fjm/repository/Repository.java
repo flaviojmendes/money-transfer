@@ -1,11 +1,11 @@
-package me.fjm.core;
+package me.fjm.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import me.fjm.api.Account;
-import me.fjm.api.Entity;
+import me.fjm.entity.Account;
+import me.fjm.entity.Entity;
 import org.apache.commons.text.WordUtils;
 
 import java.io.IOException;
