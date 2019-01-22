@@ -4,6 +4,11 @@ import com.codahale.metrics.health.HealthCheck;
 import me.fjm.db.AccountRepository;
 import me.fjm.db.ReceiptRepository;
 
+/**
+ * As there is no Real Database this Health Check
+ * exemplify what can be done in order to ensure
+ * the Database is accessible.
+ */
 public class DBHealthCheck extends HealthCheck {
 
     private ReceiptRepository receiptRepository;
@@ -16,7 +21,11 @@ public class DBHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        if(accountRepository.findAll() != null && receiptRepository.findAll() != null) {
+        if(accountRepository != null
+                && receiptRepository != null
+                && accountRepository.findAll() != null
+                && receiptRepository.findAll() != null) {
+
             return Result.healthy();
         }
         return Result.unhealthy("The DB is not accessible.");
