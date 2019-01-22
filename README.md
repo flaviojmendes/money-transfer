@@ -1,4 +1,6 @@
 # Money Transfer
+[![Build Status](https://travis-ci.org/flaviojmendes/money-transfer.svg?branch=master)](https://travis-ci.org/flaviojmendes/money-transfer)
+[![codecov](https://codecov.io/gh/flaviojmendes/money-transfer/branch/master/graph/badge.svg?token=LIUQbn7CLD)](https://codecov.io/gh/flaviojmendes/money-transfer)
 
 This is a simple Java application that uses Dropwizard to provide
 an account money transfer service. 
