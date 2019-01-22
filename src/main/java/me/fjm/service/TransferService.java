@@ -1,19 +1,20 @@
 package me.fjm.service;
 
-import me.fjm.entity.Account;
-import me.fjm.entity.Receipt;
+import me.fjm.api.Account;
+import me.fjm.api.Receipt;
 import me.fjm.exception.InsufficientFundsException;
 import me.fjm.exception.InvalidAccountException;
-import me.fjm.repository.AccountRepository;
-
-import java.util.Optional;
+import me.fjm.db.AccountRepository;
+import me.fjm.db.ReceiptRepository;
 
 public class TransferService {
 
     private AccountRepository accountRepository;
+    private ReceiptRepository receiptRepository;
 
-    public TransferService(AccountRepository accountRepository) {
+    public TransferService(AccountRepository accountRepository, ReceiptRepository receiptRepository) {
         this.accountRepository = accountRepository;
+        this.receiptRepository = receiptRepository;
     }
 
     public Receipt transferBetweenAccounts(Long fromId, Long toId, Double amount) throws InvalidAccountException, InsufficientFundsException {
@@ -32,7 +33,7 @@ public class TransferService {
                 .setFrom(accountFrom)
                 .setTo(accountTo);
 
-        return receipt;
+        return receiptRepository.save(receipt);
 
     }
 

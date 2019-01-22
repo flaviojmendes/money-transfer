@@ -1,4 +1,4 @@
-package me.fjm.entity;
+package me.fjm.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

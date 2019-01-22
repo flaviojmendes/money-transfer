@@ -1,8 +1,8 @@
 package me.fjm.resources;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
-import me.fjm.entity.Account;
-import me.fjm.repository.AccountRepository;
+import me.fjm.api.Account;
+import me.fjm.db.AccountRepository;
 import org.junit.ClassRule;
 import org.junit.Test;
 

@@ -3,9 +3,11 @@ package me.fjm;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import me.fjm.repository.AccountRepository;
+import me.fjm.db.AccountRepository;
 import me.fjm.health.DefaultHealthCheck;
+import me.fjm.db.ReceiptRepository;
 import me.fjm.resources.AccountResource;
+import me.fjm.resources.ReceiptResource;
 import me.fjm.resources.TransferResource;
 
 public class MoneyTransferApplication extends Application<MoneyTransferConfiguration> {
@@ -34,8 +36,14 @@ public class MoneyTransferApplication extends Application<MoneyTransferConfigura
         environment.jersey().register(accountResource);
 
 
+        // Receipt
+        final ReceiptRepository receiptRepository = new ReceiptRepository();
+        final ReceiptResource receiptResource = new ReceiptResource(receiptRepository);
+        environment.jersey().register(receiptResource);
+
+
         // Transfer
-        final TransferResource transferResource = new TransferResource(accountRepository);
+        final TransferResource transferResource = new TransferResource(accountRepository, receiptRepository);
         environment.jersey().register(transferResource);
 
 

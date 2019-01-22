@@ -1,10 +1,18 @@
-package me.fjm.entity;
+package me.fjm.api;
 
 public class Receipt extends Entity{
 
     public Receipt() {
         super();
     }
+
+    public Receipt(Long id, Double amount, Account from, Account to) {
+        super(id);
+        this.amount = amount;
+        this.from = from;
+        this.to = to;
+    }
+
 
 
     private Double amount;

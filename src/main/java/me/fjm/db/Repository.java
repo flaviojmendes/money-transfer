@@ -1,17 +1,17 @@
-package me.fjm.repository;
+package me.fjm.db;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import me.fjm.entity.Account;
-import me.fjm.entity.Entity;
+import me.fjm.api.Entity;
 import org.apache.commons.text.WordUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -21,22 +21,26 @@ public class Repository<T extends Entity> {
     List<T> data;
     Logger logger = Logger.getLogger(getClass().getName());
 
-    public Repository(String datasource) {
+    public Repository(String datasource, Class clazz) {
         try {
-            initData(datasource);
+            initData(datasource, clazz);
         } catch (IOException e) {
             throw new RuntimeException(
                     datasource + " missing or is unreadable", e);
         }
     }
 
-    private void initData(String datasource) throws IOException {
+    public Repository() {
+        data = new ArrayList<>();
+    }
+
+    private void initData(String datasource, Class clazz) throws IOException {
         URL url = Resources.getResource(datasource);
         String json = Resources.toString(url, Charsets.UTF_8);
         ObjectMapper mapper = new ObjectMapper();
         CollectionType type = mapper
                 .getTypeFactory()
-                .constructCollectionType(List.class, Account.class);
+                .constructCollectionType(List.class, clazz);
         data = mapper.readValue(json, type);
     }
     public List<T> findAll() {
