@@ -6,6 +6,7 @@ import me.fjm.exception.InsufficientFundsException;
 import me.fjm.exception.InvalidAccountException;
 import me.fjm.db.AccountRepository;
 import me.fjm.db.ReceiptRepository;
+import me.fjm.exception.SameAccountException;
 
 public class TransferService {
 
@@ -17,7 +18,11 @@ public class TransferService {
         this.receiptRepository = receiptRepository;
     }
 
-    public Receipt transferBetweenAccounts(Long fromId, Long toId, Double amount) throws InvalidAccountException, InsufficientFundsException {
+    public Receipt transferBetweenAccounts(Long fromId, Long toId, Double amount) throws InvalidAccountException, InsufficientFundsException, SameAccountException {
+        if(fromId == toId) {
+            throw new SameAccountException();
+        }
+
         Account accountFrom = accountRepository.findById(fromId).orElseThrow(() -> new InvalidAccountException(fromId));
         Account accountTo = accountRepository.findById(toId).orElseThrow(() -> new InvalidAccountException(toId));
 

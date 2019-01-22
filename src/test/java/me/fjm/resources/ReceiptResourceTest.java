@@ -5,11 +5,13 @@ import me.fjm.api.Account;
 import me.fjm.api.Receipt;
 import me.fjm.db.AccountRepository;
 import me.fjm.db.ReceiptRepository;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -46,11 +48,9 @@ public class ReceiptResourceTest {
 
     @Test
     public void testGetInvalidReceipt() {
-        try {
-            resources.target("/receipt/100").request().get(Receipt.class);
-        } catch (NotFoundException e) {
-            assertEquals("HTTP 404 Not Found", e.getMessage());
-        }
+
+    Response response = resources.target("/receipt/100").request().get();
+    assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
     }
 

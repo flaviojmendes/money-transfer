@@ -6,7 +6,9 @@ import me.fjm.exception.InsufficientFundsException;
 import me.fjm.exception.InvalidAccountException;
 import me.fjm.db.AccountRepository;
 import me.fjm.db.ReceiptRepository;
+import me.fjm.exception.SameAccountException;
 import me.fjm.service.TransferService;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,17 +26,15 @@ public class TransferResource {
 
     @POST
     public Receipt transfer(@QueryParam("from") Long idFrom, @QueryParam("to") Long idTo, @QueryParam("amount") Double amount) {
-        Receipt receipt = null;
+
         try {
-            receipt = transferService.transferBetweenAccounts(idFrom, idTo, amount);
+            Receipt receipt = transferService.transferBetweenAccounts(idFrom, idTo, amount);
+            return receipt;
         } catch (InvalidAccountException e) {
-            throw new WebApplicationException(e.getMessage(), 404);
-        } catch (InsufficientFundsException e) {
-            throw new WebApplicationException(e.getMessage(), 403);
+            throw new WebApplicationException(e.getMessage(), HttpStatus.NOT_FOUND_404);
+        } catch (InsufficientFundsException | SameAccountException e) {
+            throw new WebApplicationException(e.getMessage(), HttpStatus.FORBIDDEN_403);
         }
-
-        return receipt;
     }
-
 
 }

@@ -3,11 +3,12 @@ package me.fjm.resources;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import me.fjm.api.Account;
 import me.fjm.db.AccountRepository;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,11 +38,9 @@ public class AccountResourceTest {
 
     @Test
     public void testGetInvalidAccount() {
-        try {
-            resources.target("/account/100").request().get(Account.class);
-        } catch (NotFoundException e) {
-            assertEquals("HTTP 404 Not Found", e.getMessage());
-        }
+
+        Response response = resources.target("/account/100").request().get();
+        assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
     }
 
@@ -94,11 +93,9 @@ public class AccountResourceTest {
         Account newAccount = new Account();
         newAccount.setName("Updated Name");
 
-        try {
-            resources.target("/account/999").request().put(Entity.json(newAccount), Account.class);
-        } catch (NotFoundException e) {
-            assertEquals("HTTP 404 Not Found", e.getMessage());
-        }
+        Response response  = resources.target("/account/999").request().put(Entity.json(newAccount));
+
+        assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
     }
 
@@ -113,11 +110,9 @@ public class AccountResourceTest {
         repository.save(newAccount);
 
         resources.target("/account/4").request().delete(Account.class);
-        try {
-            resources.target("/account/100").request().get(Account.class);
-        } catch (NotFoundException e) {
-            assertEquals("HTTP 404 Not Found", e.getMessage());
-        }
+
+        Response response = resources.target("/account/100").request().get();
+        assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
 
 
     }
