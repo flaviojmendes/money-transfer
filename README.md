@@ -122,7 +122,7 @@ Will return:
 
 Transfer:
 ```
-[HTTP GET]
+[HTTP POST]
 http://localhost:8080/transfer?from=1&to=2&amount=1000.10
 
 Will Return a Receipt:
