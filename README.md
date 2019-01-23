@@ -19,7 +19,11 @@ The service basically handles 3 things:
 1. Receipt: Retrieving;
 1. Transfer: Transference between two accounts.
 
+
 ### Usage
+
+__Before Starting__: The app has a initial _Account Load_ for tests purpose. This is set at [dummy_accounts.json](src/main/resources/dummy_accounts.json) 
+
 
 You can find the complete Postman collection here: [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/5820b307bef0c3288e6e)
 

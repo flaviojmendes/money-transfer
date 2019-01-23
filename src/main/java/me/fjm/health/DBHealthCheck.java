@@ -22,9 +22,7 @@ public class DBHealthCheck extends HealthCheck {
     @Override
     protected Result check() throws Exception {
         if(accountRepository != null
-                && receiptRepository != null
-                && accountRepository.findAll() != null
-                && receiptRepository.findAll() != null) {
+                && receiptRepository != null) {
 
             return Result.healthy();
         }
