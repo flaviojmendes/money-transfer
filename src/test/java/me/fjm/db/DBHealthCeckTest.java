@@ -10,17 +10,22 @@ import static org.junit.Assert.assertTrue;
 
 public class DBHealthCeckTest {
 
-    private final HealthCheck healthyDBHealthCheck = new DBHealthCheck(new AccountRepository(), new ReceiptRepository());
-    private final HealthCheck unhealthyDBHealthCheck = new DBHealthCheck(null, null);
-
     @Test
     public void testHealthyDBHealthCheck() {
+        HealthCheck healthyDBHealthCheck = new DBHealthCheck(new AccountRepository(), new ReceiptRepository());
         assertTrue(healthyDBHealthCheck.execute().isHealthy());
     }
 
 
     @Test
-    public void testUnhealthyDBHealthCheck() {
+    public void testUnhealthyAccountRepositoryDBHealthCheck() {
+        HealthCheck unhealthyDBHealthCheck = new DBHealthCheck(null, new ReceiptRepository());
+        assertFalse(unhealthyDBHealthCheck.execute().isHealthy());
+    }
+
+    @Test
+    public void testUnhealthyReceiptRepositoryDBHealthCheck() {
+        HealthCheck unhealthyDBHealthCheck = new DBHealthCheck(new AccountRepository(), null);
         assertFalse(unhealthyDBHealthCheck.execute().isHealthy());
     }
 
